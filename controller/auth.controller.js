@@ -1,6 +1,7 @@
 const User = require('./../model/user.schema.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const login = async (req, res, next) => {
     const user = await User.findOne({where: {email: req.body.email}});
@@ -17,7 +18,7 @@ const login = async (req, res, next) => {
             id: user.id,
             email: user.email,
             roles: user.roles
-        }, "ZXZhbCBzZWN1IHdlYg==")
+        }, process.env.JWT_KEY),
     });
 }
 
