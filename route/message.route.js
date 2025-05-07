@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const messageController = require('../controller/message.controller.js');
 const auth = require('../middleware/auth.middleware.js');
+const limiter = require("../middleware/rateLimit.middleware");
 
-router.get('/', messageController.getAll);
-router.get('/:id', messageController.getById);
+router.get('/', () => limiter(10,10), messageController.getAll);
+router.get('/:id',() => limiter(10,10), messageController.getById);
 
-router.post('/',auth("Member"), messageController.create);
+router.post('/',auth("Member"),() => limiter(10,10), messageController.create);
 
-router.put('/:id',auth("Member"), messageController.update);
-router.delete('/:id',auth("Member"), messageController.remove);
+router.put('/:id',auth("Member"),() => limiter(10,10), messageController.update);
+router.delete('/:id',auth("Member"),() => limiter(10,20), messageController.remove);
 
 
 
