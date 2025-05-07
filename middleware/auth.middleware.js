@@ -6,8 +6,7 @@ const auth = (role) => {
         const token = req.headers.authorization?.split(" ")[1];
         try {
             req.payload = jwt.verify(token, "ZXZhbCBzZWN1IHdlYg==");
-            const roleToCheck = Role.getByName(role);
-            if(role && req.payload.roles && !req.payload.roles.includes(roleToCheck.id)){
+            if(role && req.payload.roles && !req.payload.roles.includes(role)){
                 return res.status(403).json({message: "Vous n'avez pas les droits pour réaliser cette action"});
             }
             next();

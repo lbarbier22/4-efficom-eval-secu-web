@@ -1,11 +1,11 @@
-const User = require('./../model/user.model.js');
+const User = require('./../model/user.schema.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const login = (req, res, next) => {
-    let user = User.getByEmail(req.body.email);
+const login = async (req, res, next) => {
+    const user = await User.findOne({where: {email: req.body.email}});
     if (!user) {
-        return res.status(401).json({ message: "Login  incorrect." });
+        return res.status(401).json({ message: "Login incorrect." });
     }
     if (!bcrypt.compareSync(req.body.password, user.password)) {
         return res.status(401).json({ message: "Mot passe incorrect." });
@@ -34,7 +34,7 @@ const signIn = async (req,res,next) => {
         });
         res.status(201).json(result);
     } catch (e) {
-        res.status(400).json({ error: e.message });
+        res.status(401).json({ error: e.message });
     }
 }
 
