@@ -6,11 +6,17 @@ const messageRouter = require('./route/message.route.js');
 const roleRouter = require('./route/role.route.js');
 const {connect} = require('./framework/connection.js');
 const sync = require('./framework/sync.js');
+const ipfilter = require('express-ipfilter').IpFilter
+const blockedIps = require('./blockedIps.json');
 
 const database = async () => {
     await connect();
     await sync();
 }
+
+const ips = blockedIps[0].blockedIps;
+
+console.log(ips)
 
 database();
 
@@ -21,5 +27,6 @@ app.use('/auth',authRouter);
 app.use('/message',messageRouter);
 app.use('/role',roleRouter);
 
+app.use(ipfilter(ips))
 
 module.exports = app;
