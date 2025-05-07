@@ -6,10 +6,10 @@ require('dotenv').config();
 const login = async (req, res, next) => {
     const user = await User.findOne({where: {email: req.body.email}});
     if (!user) {
-        return res.status(401).json({ message: "Login incorrect." });
+        return res.status(401).json({error: "Email ou mot de passe incorrect"})
     }
     if (!bcrypt.compareSync(req.body.password, user.password)) {
-        return res.status(401).json({ message: "Mot passe incorrect." });
+        return res.status(401).json({error: "Email ou mot de passe incorrect"})
     }
     res.status(200).json({
         id: user.id,
