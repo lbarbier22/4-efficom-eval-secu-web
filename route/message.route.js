@@ -6,10 +6,10 @@ const auth = require('../middleware/auth.middleware.js');
 router.get('/', messageController.getAll);
 router.get('/:id', messageController.getById);
 
-router.post('/',auth("Admin"), messageController.create);
+router.post('/',auth("Member"), messageController.create);
 
-router.put('/:id',auth("Admin"), messageController.update);
-router.delete('/:id',auth("Admin"), messageController.remove);
+router.put('/:id',auth("Member"), messageController.update);
+router.delete('/:id',auth("Member"), messageController.remove);
 
 
 
